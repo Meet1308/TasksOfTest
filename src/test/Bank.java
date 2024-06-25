@@ -2,6 +2,7 @@ package test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Bank {
@@ -12,12 +13,23 @@ public class Bank {
 		this.accounts = new ArrayList<BankAccount>();
 	}
 
-	public void createAccount(String name, long accountNumber) {
+	public void createAccount(String name) {
+		long accountNumber;
+		do {
+			accountNumber = generateAccountNumber();
+		}while(findAccount(accountNumber) != null);
+		
 		BankAccount account = new BankAccount(name, accountNumber);
 		accounts.add(account);
-		System.out.println("Account created successfully!");
+		System.out.println("Account created successfully! Your Account Number is : "+accountNumber);
 	}
+	
+	 private int generateAccountNumber() {
+		 	Random random = new Random();
+	        return 10000 + random.nextInt(90000);  
+	    }
 
+	 
 	public BankAccount findAccount(long accountNumber) {
 		for (BankAccount acc : accounts) {
 			if (acc.getAccountNumber() == accountNumber) {
@@ -47,9 +59,7 @@ public class Bank {
 				System.out.print("Enter your name: ");
 				String name = sc.nextLine();
 				sc.nextLine(); 
-				System.out.print("Enter account number: ");
-				long accountNumber = sc.nextLong();
-				bank.createAccount(name, accountNumber);
+				bank.createAccount(name);
 				break;
 				
 			case 2:
